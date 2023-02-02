@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  plc:
+    container_name: plcToDB
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PRODD: PROD
+
+volumes:
+  db:
+    driver: local
