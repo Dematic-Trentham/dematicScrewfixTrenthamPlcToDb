@@ -18,6 +18,7 @@
   "dependencies": {
     "bluebird": "^3.7.2",
     "dematic-master-lib": "github:jdematic/Dematic-Master-Lib#master",
+    "moment": "^2.29.4",
     "mysql": "^2.18.1",
     "node-cron": "^3.0.2",
     "node-snap7": "^1.0.6"

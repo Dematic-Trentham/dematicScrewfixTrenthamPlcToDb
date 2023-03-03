@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from WMS and push to DB - DB Connection
 //Created by: JWL
 //Date: 2022-12-30
-//Last modified: 2023/02/03 03:48:48
+//Last modified: 2023/03/03 20:46:28
 //Version: 0.0.1
 
 import * as mysql from "mysql";
