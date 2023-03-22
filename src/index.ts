@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from WMS and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2023/03/03 21:24:08
+//Last modified: 2023/03/22 06:09:14
 //Version: 0.0.1
 
 //import dematic master library
@@ -26,11 +26,11 @@ dematic.log("Starting PLC To DB Service v0.0.1 ....");
 cron.schedule("*/10 * * * * *", async () => {
   console.log("Running 10s cron job");
 
-  // plc31.readDataFromPLC31TenSeconds();
+  plc31.readDataFromPLC31TenSeconds();
 });
 plcShuttles.readShuttlesToDB();
-//run every 10 seconds
-cron.schedule("*/10 * * * *", async () => {
+//run every 1minute
+cron.schedule("* * * * *", async () => {
   console.log("Running 10m cron job");
   plcShuttles.readShuttlesToDB();
 });

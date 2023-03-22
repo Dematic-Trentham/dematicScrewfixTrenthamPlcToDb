@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from PLC 31 - Order Start
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2023/02/03 04:27:59
+//Last modified: 2023/03/05 19:10:56
 //Version: 0.0.1
 
 import plcToDB from "./../misc/plcToDB.js";
@@ -21,7 +21,6 @@ async function readDataFromPLC31TenSeconds() {
   await plcToDB.plcToDB(ip, rack, slot, snap7Types.Area.S7AreaDB, 145, 70, plcToDB.DataType.Word, "dematic_dashboard_PLC31_carton_erector_3");
   await plcToDB.plcToDB(ip, rack, slot, snap7Types.Area.S7AreaDB, 145, 90, plcToDB.DataType.Word, "dematic_dashboard_PLC31_carton_erector_4");
   await plcToDB.plcToDB(ip, rack, slot, snap7Types.Area.S7AreaDB, 145, 110, plcToDB.DataType.Word, "dematic_dashboard_PLC31_carton_erector_5");
-
   await plcToDB.plcToDB(ip, rack, slot, snap7Types.Area.S7AreaDB, 145, 10, plcToDB.DataType.Word, "dematic_dashboard_PLC31_OrderTotes");
 }
 
