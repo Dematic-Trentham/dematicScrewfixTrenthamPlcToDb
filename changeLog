@@ -1,4 +1,5 @@
 v1.0.0 - Release
-v1.0.1 - Added shuttle  updates 
-v1.0.2 - Enabled plc 31 again 
+v1.0.1 - Added shuttle  updates
+v1.0.2 - Enabled plc 31 again
 v1.0.3 - increased  shuttle  collect to 1 minute
+v1.0.7 - 25/06/2023 - Changed from nodemon to forever to allow for auto restarts on crash on production server

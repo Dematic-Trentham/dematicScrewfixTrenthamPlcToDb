@@ -15,10 +15,11 @@ RUN apk add --no-cache git
 RUN npm install --force
 
 RUN npm install -g nodemon
-
+RUN npm install forever -g
 
 COPY ./build /usr/app
 
 EXPOSE 3000
 
-CMD ["nodemon", "index.js"]
+#CMD ["nodemon", "index.js"]
+CMD ["forever", "index.js"]

@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from PLCs
 //Created by: JWL
 //Date: 2023/02/02 21:27:41
-//Last modified: 2023/02/03 04:25:48
+//Last modified: 2023/05/17 08:59:21
 //Version: 0.0.1
 
 import snap7 from "node-snap7";

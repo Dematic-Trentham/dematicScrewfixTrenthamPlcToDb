@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from Multishuttle aisles
 //Created by: JWL
 //Date: 2023/02/03 05:21:36
-//Last modified: 2023/03/03 21:12:08
+//Last modified: 2023/06/09 22:50:39
 //Version: 0.0.1
 
 import plcToDB from "./../misc/plcToDB.js";
@@ -35,6 +35,8 @@ async function GetAisle(aisle: number) {
   for (var level = 1; level < 26; level++) {
     try {
       let dataMac = await getShuttleData(aisle, level);
+
+      console.log("Aisle: " + dataMac.aisle + " Level: " + dataMac.level + " Mac: " + dataMac.mac);
 
       let timeStamp = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
 
@@ -85,15 +87,51 @@ async function GetAisle(aisle: number) {
           "'"
       );
     } catch (err) {
+      console.log("Error reading shuttle data");
+      console.log("Aisle: " + aisle + " Level: " + level);
       console.log(err);
     }
   }
 }
 
 function getShuttleData(aisle: number, level: number) {
-  var promise = new Promise(function (resolve, reject) {
-    s7client.ConnectTo("10.4.2." + (100 + aisle), 0, 1, function (err) {
+  return new Promise<any>(function (resolve, reject) {
+    s7client.ConnectTo("10.4.2." + (100 + aisle), 0, 1, async function (err) {
       if (err) reject(s7client.ErrorText(err));
+
+      //   let offset = 38659;
+
+      //   s7client.ReadArea(0x84, 2013, offset, 1, snap7Types.WordLen.S7WLByte, async function (err, data) {
+      //     if (err) reject(s7client.ErrorText(err));
+      //     console.log(data);
+
+      //     //set bit 2 to 1
+      //     data[0] = data[0] | 0b00000100;
+
+      //     console.log(data);
+
+      //     s7client.WriteArea(0x84, 2013, offset, 1, snap7Types.WordLen.S7WLByte, data, async function (err) {
+      //       if (err) reject(s7client.ErrorText(err));
+      //     });
+
+      //     //wait 1 second
+      //     await sleep(1000);
+
+      //     s7client.ReadArea(0x84, 2013, offset, 1, snap7Types.WordLen.S7WLByte, async function (err, data) {
+      //       if (err) reject(s7client.ErrorText(err));
+      //       console.log(data);
+
+      //       //set bit 2 to 0
+      //       data[0] = data[0] & 0b11111011;
+
+      //       console.log(data);
+
+      //       s7client.WriteArea(0x84, 2013, offset, 1, snap7Types.WordLen.S7WLByte, data, function (err) {
+      //         if (err) reject(s7client.ErrorText(err));
+      //       });
+      //     });
+      //   });
+      // });
 
       //Loop through the levels
 
@@ -108,9 +146,9 @@ function getShuttleData(aisle: number, level: number) {
         resolve(tempArray);
       });
     });
-  });
 
-  return promise;
+    //return promise;
+  });
 }
 
 function stringToCapital(string: string) {
@@ -131,4 +169,11 @@ function paddy(n: string, p: number, c?: undefined) {
   var pad = new Array(1 + p).join(pad_char);
   return (pad + n).slice(-pad.length);
 }
+
+async function sleep(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 export default { readShuttlesToDB };
