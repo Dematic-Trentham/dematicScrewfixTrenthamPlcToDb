@@ -21,11 +21,11 @@ function startProcess(processName: string) {
   //update the database if the processName is in the database already, otherwise insert it
   const sql = `INSERT INTO processTracker (processName, lastRestart) VALUES ('${processName}', '${mysqlStartTime}') ON DUPLICATE KEY UPDATE lastRestart = '${mysqlStartTime}'`;
 
-  console.log(sql);
+  //console.log(sql);
   //run the sql
   db.query(sql, (err: any, result: { affectedRows: string }) => {
     if (err) throw err;
-    console.log("ProcessTracker: " + result.affectedRows + " record(s) updated");
+    //console.log("ProcessTracker: " + result.affectedRows + " record(s) updated");
   });
 }
 
@@ -40,11 +40,11 @@ function updateProcess() {
   //update the database if the processName is in the database already, otherwise insert it
   const sql = `INSERT INTO processTracker (processName, lastWatchdog) VALUES ('${localProcessName}', '${mysqlUpdateTime}') ON DUPLICATE KEY UPDATE lastWatchdog = '${mysqlUpdateTime}'`;
 
-  console.log(sql);
+  //console.log(sql);
   //run the sql
   db.query(sql, (err: any, result: { affectedRows: string }) => {
     if (err) throw err;
-    console.log("ProcessTracker: " + result.affectedRows + " record(s) updated");
+    //console.log("ProcessTracker: " + result.affectedRows + " record(s) updated");
   });
 }
 
@@ -64,12 +64,12 @@ function crashProcess(err: Error) {
   //update the database if the processName is in the database already, otherwise insert it, with the crash reason
   const sql = `INSERT INTO processTracker (processName, lastCrash, lastCrashReason) VALUES ('${localProcessName}', '${mysqlCrashTime}', '${crashReason}') ON DUPLICATE KEY UPDATE lastCrash = '${mysqlCrashTime}', lastCrashReason = '${crashReason}'`;
 
-  console.log(sql);
+  //console.log(sql);
 
   //run the sql
   db.query(sql, (err: any, result: { affectedRows: string }) => {
     if (err) throw err;
-    console.log("ProcessTracker: " + result.affectedRows + " record(s) updated");
+    //console.log("ProcessTracker: " + result.affectedRows + " record(s) updated");
     //exit the process
     process.exit(1);
   });

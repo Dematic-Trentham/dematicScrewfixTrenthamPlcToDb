@@ -5,3 +5,4 @@ v1.0.3 - increased  shuttle  collect to 1 minute
 v1.0.7 - 25/06/2023 - Changed from nodemon to forever to allow for auto restarts on crash on production server
 v1.0.8 - 26/06/2023 - Added New Process tracker
 v1.0.9 - 26/06/2023 - Added git ignore
+v1.0.10 - 26/06/2023 - remove console logs from process tracker
