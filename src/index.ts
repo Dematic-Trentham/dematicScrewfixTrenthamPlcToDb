@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from plc's and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2023/06/26 21:24:35
+//Last modified: 2023/06/26 21:36:13
 //Version: 1.0.8
 
 //import process tracker and start the process
@@ -25,7 +25,7 @@ dematic.log("Dematic Dashboard Micro Service - PLC To DB");
 dematic.log("Using Dematic Master Library Version: " + dematic.version);
 dematic.log("Starting PLC To DB Service ....");
 
-dematic.log("Starting PLC To DB Service v0.0.7 ....");
+dematic.log("Starting PLC To DB Service v0.0.9 ....");
 
 //run every 10 seconds
 cron.schedule("*/10 * * * * *", async () => {
