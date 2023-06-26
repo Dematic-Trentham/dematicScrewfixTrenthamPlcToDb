@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data
 //Created by: JWL
 //Date: 2022-12-30
-//Last modified: 2023/06/26 22:10:31
+//Last modified: 2023/06/26 22:13:34
 //Version: 0.0.1
 
 import * as mysql from "mysql";
@@ -12,7 +12,7 @@ const requiredEnvVariables = ["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_DATABASE"
 //get the env variables
 for (const envVar of requiredEnvVariables) {
   if (!process.env[envVar]) {
-    console.log(`Missing required environment variable: ${envVar}`);
+    console.log(`Missing required environment variable: ${envVar} , please check your .env file`);
     process.exit(1);
   }
 }
