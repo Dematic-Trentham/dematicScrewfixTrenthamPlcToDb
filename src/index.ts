@@ -1,8 +1,12 @@
-//Service for Dematic Dashboard Screwfix trentham to collect data from WMS and push to DB
+//Service for Dematic Dashboard Screwfix trentham to collect data from plc's and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2023/06/25 06:16:45
-//Version: 0.0.1
+//Last modified: 2023/06/26 21:24:35
+//Version: 1.0.8
+
+//import process tracker and start the process
+import ProcessTracker from "./processTracker.js";
+ProcessTracker.startProcess("plcToDb");
 
 //import dematic master library
 //@ts-ignore
