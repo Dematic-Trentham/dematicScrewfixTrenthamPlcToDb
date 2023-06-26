@@ -77,7 +77,6 @@ function crashProcess(err: Error) {
 
 //every 5 seconds, update the process tracker
 cron.schedule("*/5 * * * * *", async () => {
-  console.log(localProcessName);
   updateProcess();
 });
 
