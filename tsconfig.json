@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "baseUrl": ".",
     // "resolveJsonModule": true
-    // "suppressImplicitAnyIndexErrors": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "ignoreDeprecations": "5.0",
     "sourceMap": true
   },
   "include": ["src/**/*", "src/**/*.ts", "src/**/*.tsx", "src/**/**/**/*.ts"],

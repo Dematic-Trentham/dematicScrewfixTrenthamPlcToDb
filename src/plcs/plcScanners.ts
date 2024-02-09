@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read data about the scanners
 //Created by: JWL
 //Date: 2023/03/063 20:00:00
-//Last modified: 2023/05/24 20:03:46
+//Last modified: 2023/09/05 18:35:13
 //Version: 0.0.1
 
 import plc from "./../misc/plc/plc.js";
@@ -16,6 +16,10 @@ import * as plcScanners from "../connections/scanners/PLC.js";
 import mysql from "./../db/mysqlConnection.js";
 
 let allScannerStats: scannerStatRunning[] = [];
+
+interface Map {
+  [key: string]: string | undefined;
+}
 
 //scanner stat type
 type scannerStatRunning = {
@@ -99,7 +103,7 @@ async function readScannerStatsToDB() {
         currentTimeString = currentTimeString.replace(/\//g, "-");
         nextTimeString = nextTimeString.replace(/\//g, "-");
 
-        const monthMapping = {
+        const monthMapping: Map = {
           "01": "Jan",
           "02": "Feb",
           "03": "Mar",
@@ -115,8 +119,11 @@ async function readScannerStatsToDB() {
         };
 
         //change the month from 01 to Jan etc
-        currentTimeString = currentTimeString.replace(currentTimeString.substring(3, 5), monthMapping[currentTimeString.substring(3, 5)]);
-        nextTimeString = nextTimeString.replace(nextTimeString.substring(3, 5), monthMapping[nextTimeString.substring(3, 5)]);
+        currentTimeString = currentTimeString.replace(
+          currentTimeString.substring(3, 5),
+          monthMapping[currentTimeString.substring(3, 5)]?.toString() ?? "error"
+        );
+        nextTimeString = nextTimeString.replace(nextTimeString.substring(3, 5), monthMapping[nextTimeString.substring(3, 5)]?.toString() ?? "error");
 
         //make time string dd-mm-yyyy hh:mm:ss .. dd-mm-yyyy hh:mm:ss
         let timeString = currentTimeString + " .. " + nextTimeString;
