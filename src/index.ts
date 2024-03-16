@@ -1,8 +1,8 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from plc's and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2024/02/09 08:06:57
-const version = "1.3.0";
+//Last modified: 2024/03/16 07:51:58
+const version = "1.3.1";
 
 //import process tracker and start the process
 import ProcessTracker from "./processTracker.js";
@@ -49,7 +49,7 @@ cron.schedule("*/10 * * * * *", async () => {
 
   plc31.readDataFromPLC31TenSeconds();
   //check all EMS zones
-  emsZones.checkAllEMS();
+  //emsZones.checkAllEMS();
 
   await cartonClosing.getAndInsertFaultsForCartonClosing();
   await cartonErectors.getAndInsertFaultsForErectors();

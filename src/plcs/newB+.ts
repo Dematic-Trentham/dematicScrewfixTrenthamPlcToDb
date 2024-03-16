@@ -67,7 +67,7 @@ async function getAndInsertFaults(ip: string, machineType: string, line: number,
   //read double word from PLC
   let doubleWordValue = await plc.readFromS7DBToInt2(ip, 0, 2, boxCountDb, boxCountWord, snap7Types.WordLen.S7WLDWord);
 
-  console.log("Checking box count for " + machineType + " " + line + "-" + doubleWordValue);
+  // console.log("Checking box count for " + machineType + " " + line + "-" + doubleWordValue);
 
   //did the box count change
   if (machines[machineIndex].boxCount != doubleWordValue) {
@@ -112,8 +112,8 @@ setInterval(() => {
 
       let sqlResult = mysql.query(sql);
 
-      console.log("Watchdog timer expired for " + machines[m].machineType + " " + machines[m].line);
-      console.log(sql);
+      // console.log("Watchdog timer expired for " + machines[m].machineType + " " + machines[m].line);
+      //  console.log(sql);
       //reset the watchdog timer
       machines[m].watchDogTimer = timeNow;
     }

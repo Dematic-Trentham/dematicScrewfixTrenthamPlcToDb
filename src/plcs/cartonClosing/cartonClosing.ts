@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from Carton closing lines 1-4
 //Created by: JWL
 //Date: 2023/03/063 20:00:00
-//Last modified: 2024/01/03 19:53:48
+//Last modified: 2024/03/16 07:40:58
 //Version: 0.0.1
 
 import plcToDB from "../../misc/plcToDB.js";
@@ -50,8 +50,8 @@ async function getIpacks() {
   //  getIpack("10.4.2.154", 3, "Line3iPack");
   //  getIpack("10.4.2.156", 4, "Line4iPack");
 
-  await tryCatchSimple.Promise(() => newIpackv1.getAndInsertFaults("10.4.2.158", "iPack", 5));
-  await tryCatchSimple.Promise(() => newIpackv1.getAndInsertFaults("10.4.2.159", "iPack", 6));
+  await tryCatchSimple.Promise(() => newIpackv1.getAndInsertFaults("10.4.2.158", "iPack", 5), "Ipack 6 - Fault or Count Error");
+  await tryCatchSimple.Promise(() => newIpackv1.getAndInsertFaults("10.4.2.159", "iPack", 6), "Ipack 5 - Fault or Count Error");
 }
 async function getLidders() {
   // getLidder("10.4.2.151", 1, "Line1Lidder");
