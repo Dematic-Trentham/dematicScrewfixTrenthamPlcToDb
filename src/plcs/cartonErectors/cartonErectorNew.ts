@@ -1,7 +1,7 @@
 //Carton Erectors New - Erector 5
 //Created by: JWL
 //Date: 2023/09/02 12:51:41
-//Last modified: 2023/12/09 16:37:07
+//Last modified: 2024/03/16 11:57:28
 //Version: 1.0.0
 
 //import plc
@@ -13,6 +13,7 @@ import mysql from "./../../db/mysqlConnection.js";
 
 //list of faults and there locations
 let faults = [
+  { fault: "Test Fault", location: "1.2", current: false },
   { fault: "D10 Empty Pallet Defect", location: "84.1", current: false },
   { fault: "D11 Transfer Towards Cavity Motion Defect", location: "84.2", current: false },
   { fault: "D12 Transfer Towards Instacking Motion Defect", location: "84.3", current: false },

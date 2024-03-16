@@ -1,16 +1,16 @@
 //Carton Erectors OLD
 //Created by: JWL
 //Date: 2023/09/02 12:51:41
-//Last modified: 2024/03/16 07:46:59
+//Last modified: 2024/03/16 12:02:47
 //Version: 1.0.0
 //todo remove when checked
 //import plc
-//import plc from "../../misc/plc/plc.js";
+import plc from "../../misc/plc/plc.js";
 
 //import snap7Types from "../../misc/plc/types.js";
 
 //import db
-//import mysql from "../../db/mysqlConnection.js";
+import mysql from "../../db/mysqlConnection.js";
 
 //list of faults and there locations
 let faults = [
@@ -26,17 +26,38 @@ let faults = [
   { fault: "[073] - Default - Store Empty", location: "40.1", current: false },
   { fault: "[074] - Impossible Cycle - Test Mode In Progress", location: "40.2", current: false },
   { fault: "[075] - Default Movimot - Carton Conveyor", location: "40.3", current: false },
-  { fault: "[076] - ", location: "40.5", current: false }, // Empty line
+  { fault: "[076] - ", location: "40.4", current: false }, // Empty line
   { fault: "[077] - Default Transfer - Excessive Thickness", location: "40.5", current: false },
   { fault: "[078] - Default - Air Pressure", location: "40.6", current: false },
   { fault: "[079] - Default  - Transfer Variator", location: "40.7", current: false },
 ];
+
+let testFault: boolean = false;
 
 //import old B plus
 import oldBPlusDB from "./../oldB+DB.js";
 
 async function getAndInsertFaultsForOldErector(ip: string, machineType: string, line: number) {
   await oldBPlusDB.getAndInsertFaultsDB(ip, machineType, line, faults, 9, 6, 2);
+
+  //get the general fault of the machine
+  let generalFault = await plc.readFromMarkerBit(ip, 0, 2, 0, 1);
+
+  //if the general fault is true and the test fault is false then insert the fault into the DB
+  if (generalFault == 1 && testFault == false) {
+    //insert fault into DB
+    let sql = "INSERT INTO cartonClosing.faults (machineType, line, fault) VALUES ('" + machineType + "', '" + line + "', 'General Fault')";
+
+    let sqlResult = await mysql.query(sql);
+
+    //set test fault to true
+    testFault = true;
+  }
+
+  //if the general fault is false then set the test fault to false
+  if (generalFault == 0) {
+    testFault = false;
+  }
 }
 
 //export the function
