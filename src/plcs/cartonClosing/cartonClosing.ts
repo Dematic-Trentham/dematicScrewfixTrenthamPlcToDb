@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from Carton closing lines 1-4
 //Created by: JWL
 //Date: 2023/03/063 20:00:00
-//Last modified: 2024/03/16 07:40:58
+//Last modified: 2024/04/14 09:04:18
 //Version: 0.0.1
 
 import plcToDB from "../../misc/plcToDB.js";

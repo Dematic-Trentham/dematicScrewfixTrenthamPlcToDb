@@ -1,8 +1,8 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from plc's and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2024/03/16 15:07:48
-const version = "1.4.0";
+//Last modified: 2024/03/16 18:17:41
+const version = "1.4.1";
 
 //import process tracker and start the process
 import ProcessTracker from "./processTracker.js";
@@ -39,17 +39,17 @@ dematic.log("Starting PLC To DB Service ....");
 
 dematic.log("Starting PLC To DB Service v" + version + " ....");
 
-//run every 10 seconds
-cron.schedule("*/10 * * * * *", async () => {
+//run every 3 seconds
+cron.schedule("*/3 * * * * *", async () => {
   console.log();
-  dematic.log("Running 10s cron job");
+  dematic.log("Running 3s cron job");
 
   //start timer for this function
   const start = Date.now();
 
   plc31.readDataFromPLC31TenSeconds();
   //check all EMS zones
-  //emsZones.checkAllEMS();
+  emsZones.checkAllEMS();
 
   await cartonClosing.getAndInsertFaultsForCartonClosing();
   await cartonErectors.getAndInsertFaultsForErectors();
@@ -58,10 +58,10 @@ cron.schedule("*/10 * * * * *", async () => {
   const end = Date.now();
 
   //log the time taken
-  dematic.log("Time taken for 10 second : " + (end - start) + "ms");
+  dematic.log("Time taken for 3 second : " + (end - start) + "ms");
 
   //make a nice percentage  - (end - start) / 10000) * 100 + "%"
-  let percent = ((end - start) / 10000) * 100;
+  let percent = ((end - start) / 3000) * 100;
   percent = Math.round(percent * 100) / 100;
 
   //how much percent of the 10 seconds did this function take?
