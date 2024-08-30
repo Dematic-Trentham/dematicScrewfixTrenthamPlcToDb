@@ -15,4 +15,5 @@ v1.2.5 - 10/12/2023 - old CC added to this , 5 and 6 also. all b+ here
 v1.3.0 - 10/12/2023 - old erectors updated to use DB
 v1.3.1 - 16/03/2024 - Issues with wrong bits used for erectors 1-4
 v1.4.0 - 16/03/2024 - changed to cycle erectiors all at the same time
--
+v1.5.0 - 13/06/2024 - added shuttle swap log,
+bug fix for 3 second delay on erectors

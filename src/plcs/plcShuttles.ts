@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from Multishuttle aisles
 //Created by: JWL
 //Date: 2023/02/03 05:21:36
-//Last modified: 2023/06/09 22:50:39
+//Last modified: 2024/08/30 05:03:30
 //Version: 0.0.1
 
 import plcToDB from "./../misc/plcToDB.js";
@@ -14,14 +14,19 @@ var s7client = new snap7.S7Client();
 //import db
 import mysql from "./../db/mysqlConnection.js";
 
+//variables
+let amountOfAisles = 3;
+const amountOfLevels = 25;
+
 //import types
 import snap7Types from "./../misc/plc/types.js";
+import db from "./../db/db.js";
 
 //function to be called by the main program every 10 minutes
 async function readShuttlesToDB() {
   console.log("Reading Shuttles to DB");
 
-  for (var aisle = 1; aisle < 4; aisle++) {
+  for (var aisle = 1; aisle < amountOfAisles + 1; aisle++) {
     //console.log(aisle);
     //Loop through the 3 aisles
     await GetAisle(aisle);
@@ -32,30 +37,29 @@ async function readShuttlesToDB() {
 }
 
 async function GetAisle(aisle: number) {
-  for (var level = 1; level < 26; level++) {
+  for (var level = 1; level < amountOfLevels + 1; level++) {
     try {
       let dataMac = await getShuttleData(aisle, level);
 
       console.log("Aisle: " + dataMac.aisle + " Level: " + dataMac.level + " Mac: " + dataMac.mac);
 
-      let timeStamp = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+      let timeStamp = new Date().toISOString();
 
       //before we update the database, check if that location is in use
-      let locationInUse = await mysql.query(
-        //@ts-ignore
-        "SELECT * FROM shuttles WHERE Location = '" + `MSAI${paddy(dataMac.aisle, 2)}LV${paddy(dataMac.level, 2)}SH01` + "'"
-      );
+      //let locationInUse = await mysql.query(
+      //@ts-ignore
+      //  "SELECT * FROM shuttles WHERE Location = '" + `MSAI${paddy(dataMac.aisle, 2)}LV${paddy(dataMac.level, 2)}SH01` + "'"
+      //);
 
-      //console.log(" ");
-      //console.log("Checking aisle " + aisle + " level " + level + " location " + `MSAI${paddy(dataMac.aisle, 2)}LV${paddy(dataMac.level, 2)}SH01`);
-      // console.log(locationInUse.length);
+      //update the shuttle locations table NEW
+      let locationInUse = await db.dmsShuttleLocations.findMany({
+        where: {
+          currentLocation: `MSAI${paddy(dataMac.aisle, 2)}LV${paddy(dataMac.level, 2)}SH01`,
+        },
+      });
 
       //loop through the results
       for (var i = 0; i < locationInUse.length; i++) {
-        //@ts-ignore
-        //console.log("Checking         :" + dataMac.mac);
-        //console.log("Checking against :" + locationInUse[i].MacAddress);
-
         //if the location is in use, check if the mac address is the same
         //@ts-ignore
         if (locationInUse[i].MacAddress != dataMac.mac) {
@@ -65,7 +69,50 @@ async function GetAisle(aisle: number) {
           //@ts-ignore
           console.log("Location in use by " + locationInUse[i].MacAddress + " updating to " + dataMac.mac);
 
-          await mysql.query("UPDATE shuttles SET Location = NULL WHERE MacAddress = '" + locationInUse[i].MacAddress + "'");
+          await mysql.query("UPDATE shuttles SET Location = NULL WHERE MacAddress = '" + locationInUse[i].macAddress + "'");
+
+          //update the shuttle locations table NEW
+          await db.dmsShuttleLocations.update({
+            where: {
+              macAddress: locationInUse[i].macAddress,
+            },
+            data: {
+              currentLocation: "",
+            },
+          });
+
+          //add this data to the shuttle Swap log - timestamp, aisle, level, old mac, new mac
+          //@ts-ignore
+          await mysql.query(
+            "INSERT INTO shuttleSwapLog (timeStamp, aisle, level, oldMac, oldId, newMac, newId) VALUES ('" +
+              timeStamp +
+              "', '" +
+              dataMac.aisle +
+              "', '" +
+              dataMac.level +
+              "', '" +
+              locationInUse[i].macAddress +
+              "', '" +
+              locationInUse[i].shuttleID +
+              "', '" +
+              dataMac.mac +
+              "', '" +
+              currentId[0].ID +
+              "')"
+          );
+
+          //update the shuttle locations table NEW
+          await db.dmsShuttleSwapLogs.create({
+            data: {
+              timestamp: timeStamp,
+              aisle: aisle,
+              level: level,
+              oldMacAddress: locationInUse[i].macAddress,
+              oldShuttleID: locationInUse[i].shuttleID,
+              newMacAddress: dataMac.mac,
+              newShuttleID: currentId[0].ID,
+            },
+          });
         }
       }
 
@@ -86,6 +133,23 @@ async function GetAisle(aisle: number) {
           timeStamp +
           "'"
       );
+
+      //update the shuttle locations table NEW
+      await db.dmsShuttleLocations.upsert({
+        where: {
+          macAddress: dataMac.mac,
+        },
+        update: {
+          currentLocation: `MSAI${paddy(dataMac.aisle, 2)}LV${paddy(dataMac.level, 2)}SH01`,
+          locationLastUpdated: timeStamp,
+        },
+        create: {
+          macAddress: dataMac.mac,
+          currentLocation: `MSAI${paddy(dataMac.aisle, 2)}LV${paddy(dataMac.level, 2)}SH01`,
+          locationLastUpdated: timeStamp,
+          shuttleID: "", // Provide a value for shuttleID
+        },
+      });
     } catch (err) {
       console.log("Error reading shuttle data");
       console.log("Aisle: " + aisle + " Level: " + level);
@@ -98,40 +162,6 @@ function getShuttleData(aisle: number, level: number) {
   return new Promise<any>(function (resolve, reject) {
     s7client.ConnectTo("10.4.2." + (100 + aisle), 0, 1, async function (err) {
       if (err) reject(s7client.ErrorText(err));
-
-      //   let offset = 38659;
-
-      //   s7client.ReadArea(0x84, 2013, offset, 1, snap7Types.WordLen.S7WLByte, async function (err, data) {
-      //     if (err) reject(s7client.ErrorText(err));
-      //     console.log(data);
-
-      //     //set bit 2 to 1
-      //     data[0] = data[0] | 0b00000100;
-
-      //     console.log(data);
-
-      //     s7client.WriteArea(0x84, 2013, offset, 1, snap7Types.WordLen.S7WLByte, data, async function (err) {
-      //       if (err) reject(s7client.ErrorText(err));
-      //     });
-
-      //     //wait 1 second
-      //     await sleep(1000);
-
-      //     s7client.ReadArea(0x84, 2013, offset, 1, snap7Types.WordLen.S7WLByte, async function (err, data) {
-      //       if (err) reject(s7client.ErrorText(err));
-      //       console.log(data);
-
-      //       //set bit 2 to 0
-      //       data[0] = data[0] & 0b11111011;
-
-      //       console.log(data);
-
-      //       s7client.WriteArea(0x84, 2013, offset, 1, snap7Types.WordLen.S7WLByte, data, function (err) {
-      //         if (err) reject(s7client.ErrorText(err));
-      //       });
-      //     });
-      //   });
-      // });
 
       //Loop through the levels
 

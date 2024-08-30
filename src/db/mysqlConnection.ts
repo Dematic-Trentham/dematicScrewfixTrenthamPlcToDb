@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data
 //Created by: JWL
 //Date: 2022-12-30
-//Last modified: 2023/12/09 17:26:56
+//Last modified: 2024/08/30 05:03:36
 //Version: 0.0.1
 
 import * as mysql from "mysql";
@@ -18,9 +18,9 @@ const missingEnvVariables = requiredEnvVariables.filter((variable) => !process.e
 
 //is docker
 if (isDocker()) {
-  if (missingEnvVariables.length > 0) {
-    throw new Error(`The following required environment variables are missing: ${missingEnvVariables.join(", ")}`);
-  }
+  //if (missingEnvVariables.length > 0) {
+  // throw new Error(`The following required environment variables are missing: ${missingEnvVariables.join(", ")}`);
+  // }
 } else {
   dematic.log("Not Docker - using local config for db");
 }

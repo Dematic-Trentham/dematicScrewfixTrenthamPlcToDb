@@ -1,8 +1,8 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from plc's and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2024/03/16 18:17:41
-const version = "1.4.1";
+//Last modified: 2024/08/30 05:03:49
+const version = "1.5.0";
 
 //import process tracker and start the process
 import ProcessTracker from "./processTracker.js";
@@ -48,7 +48,7 @@ cron.schedule("*/3 * * * * *", async () => {
   const start = Date.now();
 
   plc31.readDataFromPLC31TenSeconds();
-  //check all EMS zones
+  ////check all EMS zones
   emsZones.checkAllEMS();
 
   await cartonClosing.getAndInsertFaultsForCartonClosing();
@@ -64,9 +64,9 @@ cron.schedule("*/3 * * * * *", async () => {
   let percent = ((end - start) / 3000) * 100;
   percent = Math.round(percent * 100) / 100;
 
-  //how much percent of the 10 seconds did this function take?
+  //how much percent of the 3 seconds did this function take?
 
-  dematic.log("Percent of 10 seconds : " + percent + "%");
+  dematic.log("Percent of 3 seconds : " + percent + "%");
 });
 
 //run every 1minute
@@ -79,3 +79,4 @@ cron.schedule("*/5 * * * *", async () => {
   //console.log("Running 5m cron job");
   plcShuttles.readShuttlesToDB();
 });
+plcShuttles.readShuttlesToDB();
