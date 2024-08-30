@@ -1,8 +1,8 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from plc's and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2024/08/30 05:03:49
-const version = "1.5.0";
+//Last modified: 2024/08/30 05:06:41
+const version = "2.0.0";
 
 //import process tracker and start the process
 import ProcessTracker from "./processTracker.js";
