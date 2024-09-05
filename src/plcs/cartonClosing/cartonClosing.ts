@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from Carton closing lines 1-4
 //Created by: JWL
 //Date: 2023/03/063 20:00:00
-//Last modified: 2024/04/14 09:04:18
+//Last modified: 2024/08/30 20:20:14
 //Version: 0.0.1
 
 import plcToDB from "../../misc/plcToDB.js";
@@ -20,7 +20,7 @@ import oldCC from "./cartonClosingOld/machines.js";
 import * as tryCatchSimple from "./../../misc/tryCatchSimple.js";
 
 //array to store the last known data from each plc
-let data: any[] = [];
+let data: Record<string, any> = {};
 
 //function to be run from the main program every 10 seconds
 //this function will read the data from the PLC and store it in the database

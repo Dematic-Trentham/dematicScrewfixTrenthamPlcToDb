@@ -1,14 +1,14 @@
 //Carton Closing Old
 //Created by: JWL
 //Date: 2023/09/02 12:51:41
-//Last modified: 2023/12/11 08:25:18
+//Last modified: 2024/08/30 20:20:27
 //Version: 1.0.0
 
 //function currently running
 let currentlyRunning = false;
 
 //create array to store all carton closing data
-let cartonClosingData: any[] = [];
+let cartonClosingData: { [key: string]: any } = {};
 
 import snap7 from "node-snap7";
 //import db
