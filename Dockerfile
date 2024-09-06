@@ -1,4 +1,9 @@
 FROM node:lts-alpine
+
+# Defaults to production, docker-compose overrides this to development on build and run.
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
+
 RUN apk add --no-cache --virtual .gyp python3 make g++
 
 WORKDIR /app
@@ -7,17 +12,15 @@ RUN mkdir -p /usr/app
 
 WORKDIR /usr/app
 
-COPY package.json /usr/app
-#COPY package-lock.json /usr/app
+COPY packageProduction.json /usr/app/package.json
 
 RUN apk add --no-cache git
-
-RUN npm install --force
-
-RUN npm install -g nodemon
-RUN npm install forever -g
+RUN npm install 
 
 COPY ./build /usr/app
+
+COPY  ./node_modules/masterPrismaSchema/prisma/schema ./prisma/schema/
+RUN npx prisma generate --schema ./prisma/schema
 
 EXPOSE 3000
 

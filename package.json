@@ -17,7 +17,8 @@
     "prisma-gen": "prisma generate --schema=./node_modules/masterPrismaSchema/prisma/schema",
     "prisma-pull": "npx prisma db pull --schema=./node_modules/masterPrismaSchema/prisma/schema",
     "prisma-push": "npx prisma db push --schema=./node_modules/masterPrismaSchema/prisma/schema",
-    "build-docker": "npm run prisma-merge && npm run buildOnce && docker build -t screwfix-trentham-plc-to-db ."
+    "packageJsonStripper": "node tools/packageJsonStripper.js",
+    "build-docker": "npm run prisma-merge && npm run buildOnce && npm run packageJsonStripper && docker build -t screwfix-trentham-plc-to-db ."
   },
   "author": "",
   "license": "ISC",
