@@ -14,8 +14,7 @@
     "noFallthroughCasesInSwitch": true,
     "isolatedModules": true,
     "baseUrl": ".",
-    // "resolveJsonModule": true
-    "suppressImplicitAnyIndexErrors": true,
+    // "resolveJsonModule": true,
     "ignoreDeprecations": "5.0",
     "sourceMap": true
   },
