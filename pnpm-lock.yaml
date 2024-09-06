@@ -36,6 +36,9 @@ importers:
       '@types/node-snap7':
         specifier: ^0.2.21
         version: 0.2.24
+      masterPrismaSchema:
+        specifier: git+https://jdematic@github.com/jameswlyons/dematicDashboardScrewfixTrenthamMasterPrismaSchema.git
+        version: git+https://jdematic@github.com/jameswlyons/dematicDashboardScrewfixTrenthamMasterPrismaSchema.git#12439278f06bf800055a9729ada6af89d9d31bc8(prisma@5.19.1)
       prisma:
         specifier: ^5.19.0
         version: 5.19.1
@@ -146,6 +149,10 @@ packages:
 
   isarray@1.0.0:
     resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==}
+
+  masterPrismaSchema@git+https://jdematic@github.com/jameswlyons/dematicDashboardScrewfixTrenthamMasterPrismaSchema.git#12439278f06bf800055a9729ada6af89d9d31bc8:
+    resolution: {commit: 12439278f06bf800055a9729ada6af89d9d31bc8, repo: https://jdematic@github.com/jameswlyons/dematicDashboardScrewfixTrenthamMasterPrismaSchema.git, type: git}
+    version: 1.0.0
 
   mimic-response@3.1.0:
     resolution: {integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==}
@@ -362,6 +369,12 @@ snapshots:
   ini@1.3.8: {}
 
   isarray@1.0.0: {}
+
+  masterPrismaSchema@git+https://jdematic@github.com/jameswlyons/dematicDashboardScrewfixTrenthamMasterPrismaSchema.git#12439278f06bf800055a9729ada6af89d9d31bc8(prisma@5.19.1):
+    dependencies:
+      '@prisma/client': 5.19.1(prisma@5.19.1)
+    transitivePeerDependencies:
+      - prisma
 
   mimic-response@3.1.0: {}
 

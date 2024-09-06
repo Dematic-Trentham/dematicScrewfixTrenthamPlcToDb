@@ -25,3 +25,12 @@ build/
 *.ntvs*
 *.njsproj
 *.sln
+
+#stripped package.json
+packageProduction.json
+
+#lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+pnpm-lock.yaml
