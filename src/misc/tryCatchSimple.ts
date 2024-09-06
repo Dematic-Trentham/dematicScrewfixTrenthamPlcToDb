@@ -1,15 +1,12 @@
-//@ts-ignore
-import dematic from "dematic-master-lib";
-
 //try catch function to catch any errors and log them to the console
 function Void(fn: () => void, name?: string) {
   try {
     fn();
   } catch (err) {
     if (name != undefined) {
-      dematic.log("Error in " + name);
+      console.log("Error in " + name);
     }
-    dematic.log(err);
+    console.log(err);
   }
 }
 //try catch function to catch any errors and log them to the console
@@ -18,9 +15,9 @@ async function Promise(fn: () => Promise<void>, name?: string) {
     await fn();
   } catch (err) {
     if (name != undefined) {
-      dematic.log("Error in " + name);
+      console.log("Error in " + name);
     }
-    dematic.log(err);
+    console.log(err);
   }
 }
 //try catch function to catch any errors and log them to the console
@@ -29,9 +26,9 @@ function WithParam(fn: (param: any) => void, param: any, name?: string) {
     fn(param);
   } catch (err) {
     if (name != undefined) {
-      dematic.log("Error in " + name);
+      console.log("Error in " + name);
     }
-    dematic.log(err);
+    console.log(err);
   }
 }
 //try catch function to catch any errors and log them to the console
@@ -41,10 +38,10 @@ async function PromiseWithParam(fn: (param: any) => Promise<any>, param: any, na
     await fn(param);
   } catch (err) {
     if (name != undefined) {
-      dematic.log("Error in " + name);
+      console.log("Error in " + name);
     }
 
-    dematic.log(err);
+    console.log(err);
   }
 }
 

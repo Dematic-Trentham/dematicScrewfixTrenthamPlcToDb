@@ -1,15 +1,11 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data
 //Created by: JWL
 //Date: 2022-12-30
-//Last modified: 2024/08/30 05:03:36
+//Last modified: 2024/09/05 18:24:02
 //Version: 0.0.1
 
 import * as mysql from "mysql";
 import fs from "fs";
-
-//import dematic master library
-//@ts-ignore
-import dematic from "dematic-master-lib";
 
 const requiredEnvVariables = ["DB_HOST", "DB_USER", "DB_PASSWORD", "DB_DATABASE"];
 
@@ -22,7 +18,7 @@ if (isDocker()) {
   // throw new Error(`The following required environment variables are missing: ${missingEnvVariables.join(", ")}`);
   // }
 } else {
-  dematic.log("Not Docker - using local config for db");
+  console.log("Not Docker - using local config for db");
 }
 
 const pool = mysql.createPool({
@@ -34,15 +30,15 @@ const pool = mysql.createPool({
   debug: false,
 });
 
-dematic.log("DB Connection Pool Created");
+console.log("DB Connection Pool Created");
 
 try {
   query("SELECT 1 + 1 AS solution").then((rows) => {
-    dematic.log("DB Connection Test Successful");
+    console.log("DB Connection Test Successful");
   });
 } catch (err) {
-  dematic.log("DB Connection Test Failed");
-  dematic.log(err);
+  console.log("DB Connection Test Failed");
+  console.log(err);
 }
 
 //function to query the DB

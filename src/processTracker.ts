@@ -4,15 +4,11 @@ import db from "./db/mysqlConnection.js";
 //import node-cron
 import cron from "node-cron";
 
-//import dematic master library
-//@ts-ignore
-import dematic from "dematic-master-lib";
-
 let localProcessName = "";
 
 //when the process starts, log the process name and the start time
 function startProcess(processName: string) {
-  dematic.log(`${processName} started at ${new Date()}`);
+  console.log(`${processName} started at ${new Date()}`);
 
   localProcessName = processName;
 
