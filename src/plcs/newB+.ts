@@ -82,7 +82,7 @@ async function getAndInsertFaults(ip: string, machineType: string, line: number,
       machines[machineIndex].watchDogTimer = new Date();
 
       for (let i = 0; i < difference; i++) {
-        console.log("Inserting box count for " + machineType + " " + line + "-" + doubleWordValue);
+        // console.log("Inserting box count for " + machineType + " " + line + "-" + doubleWordValue);
         let sqlResult = await mysql.query(sql);
       }
     }
