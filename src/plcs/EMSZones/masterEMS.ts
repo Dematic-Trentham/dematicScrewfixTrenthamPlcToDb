@@ -16,10 +16,23 @@ import PLC33 from "./PLC33.js";
 
 import PLC34 from "./PLC34.js";
 import PLC35 from "./PLC35.js";
+import { timeAFunction } from "../../misc/timeAFunction.js";
 
 async function checkAllEMS() {
+  timeAFunction("checkAllEMS", async () => {
+    await checkAllEMS2();
+  });
+
   //console.log("checking EMS zones");
 
+  //await PLC35.read35EMSToDB();
+
+  // console.log("checked EMS zones");
+}
+
+export default { checkAllEMS };
+
+async function checkAllEMS2() {
   await PLC1.read1EMSToDB();
   await PLC2.read2EMSToDB();
 
@@ -37,9 +50,4 @@ async function checkAllEMS() {
   await PLC33.read33EMSToDB();
 
   await PLC34.read34EMSToDB();
-  //await PLC35.read35EMSToDB();
-
-  // console.log("checked EMS zones");
 }
-
-export default { checkAllEMS };
