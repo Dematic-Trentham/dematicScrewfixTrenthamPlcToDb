@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from PLCs
 //Created by: JWL
 //Date: 2023/02/02 21:27:41
-//Last modified: 2023/12/28 07:42:27
+//Last modified: 2024/09/06 12:49:55
 //Version: 0.0.1
 
 import snap7 from "node-snap7";
@@ -20,6 +20,44 @@ enum DataType {
   real = 5,
   timer = 6,
   counter = 7,
+}
+
+async function readFromS7DbRAW(ipAddress: string, rack: number, slot: number, dbNumber: number, offset: number, length: number) {
+  return new Promise<Buffer>((resolve, reject) => {
+    try {
+      // Create a new client and connect to the PLC
+      var s7client = new snap7.S7Client();
+      s7client.ConnectTo(ipAddress, rack, slot, function (err) {
+        //if error fall to catch block in function
+        if (err) {
+          console.log("error: " + s7client.ErrorText(err));
+          reject(s7client.ErrorText(err));
+          return;
+        }
+
+        s7client.DBRead(dbNumber, offset, length, function (err, buffer) {
+          if (err) {
+            reject(s7client.ErrorText(err));
+            return;
+          }
+
+          try {
+            // Disconnect from the PLC
+            s7client.Disconnect();
+            resolve(buffer);
+          } catch (error) {
+            console.log(error);
+            reject(error);
+            return;
+          }
+        });
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+      return;
+    }
+  });
 }
 
 //read from a DB and convert to int
@@ -553,5 +591,6 @@ export default {
   readFromS7DBToBuffer,
   bufferToBit,
   bufferToBit2,
+  readFromS7DbRAW,
   DataType,
 };

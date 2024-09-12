@@ -69,7 +69,7 @@ function crashProcess(err: Error) {
 
   //run the sql
   db.query(sql, (err: any, result: { affectedRows: string }) => {
-    if (err) throw err;
+    //if (err) throw err;
     //console.log("ProcessTracker: " + result.affectedRows + " record(s) updated");
     //exit the process
     process.exit(1);
