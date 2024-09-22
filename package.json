@@ -34,7 +34,7 @@
     "@types/mysql": "^2.15.26",
     "@types/node-cron": "^3.0.11",
     "@types/node-snap7": "^0.2.24",
-    "masterPrismaSchema": "git+https://jdematic@github.com/jameswlyons/dematicDashboardScrewfixTrenthamMasterPrismaSchema.git",
+    "masterPrismaSchema": "git+https://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:x-oauth-basic@github.com/jameswlyons/dematicDashboardScrewfixTrenthamMasterPrismaSchema.git",
     "prisma": "^5.19.1"
   }
 }

@@ -1,28 +1,64 @@
-FROM node:lts-alpine
+FROM node:18-alpine AS base
 
-# Defaults to production, docker-compose overrides this to development on build and run.
-ARG NODE_ENV=production
-ENV NODE_ENV $NODE_ENV
+# Stage 1: Builder
+FROM base as builder
 
-RUN apk add --no-cache --virtual .gyp python3 make g++
-
+# Set the working directory
 WORKDIR /app
 
-RUN mkdir -p /usr/app
+RUN apk add --no-cache git --virtual .gyp python3 make g++
 
-WORKDIR /usr/app
+# Copy package.json and package-lock.json
+COPY package.json ./
 
-COPY packageProduction.json /usr/app/package.json
+# Install dependencies
+RUN npm install --legacy-peer-deps
+RUN npm install -g typescript
 
-RUN apk add --no-cache git
-RUN npm install 
+# Copy the rest of the application
+COPY . .
 
-COPY ./build /usr/app
+RUN npm run prisma-merge
 
-COPY  ./node_modules/masterPrismaSchema/prisma/schema ./prisma/schema/
-RUN npx prisma generate --schema ./prisma/schema
+# Build the application
+RUN npm run buildOnce
+RUN npm run packageJsonStripper
 
-EXPOSE 3000
+# Stage 2: Production image
+FROM base as builder2
 
-#CMD ["nodemon", "index.js"]
-CMD ["node", "index.js"]
+RUN apk add --no-cache git --virtual .gyp python3 make g++
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/build ./build
+
+# Copy package.json and package-lock.json
+COPY --from=builder /app/packageProduction.json ./package.json
+
+# Install only production dependencies
+RUN npm install
+
+# Stage 3: Production image
+FROM base as production
+
+# Set the working directory
+WORKDIR /app
+
+#copy the package.json from the builder2 stage
+COPY --from=builder2 /app/package.json ./
+
+#copy the node_modules from the builder2 stage
+COPY --from=builder2 /app/node_modules ./node_modules
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/build ./build
+
+# Copy the Prisma client from the builder stage
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+
+# set the memory limit to  3gb and run the application
+CMD ["node","build/index.js"]
