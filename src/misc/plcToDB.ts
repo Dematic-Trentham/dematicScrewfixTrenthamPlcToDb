@@ -1,15 +1,14 @@
 //Service for Dematic Dashboard Screwfix trentham to read data from PLC and convert to DB
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2023/10/01 02:05:31
+//Last modified: 2024/09/16 23:22:00
 //Version: 0.0.1
 
 //import plc
 import plc from "./plc/plc.js";
 import snap7Types from "./plc/types.js";
 
-//import db
-import mysql from "./../db/mysqlConnection.js";
+import DB from "../db/db.js";
 
 snap7Types.Area;
 
@@ -21,14 +20,36 @@ async function plcToDB(ip: string, rack: number, slot: number, area: number, db:
       await plc
         .readFromS7DBToInt(ip, rack, slot, db, offset, type)
         .then(async (result) => {
-          //sql query to insert data into DB
-          let sql =
-            "INSERT INTO parameters (parameter, value, hidden) VALUES ('" +
-            dbName +
-            "', ? , 0) ON DUPLICATE KEY UPDATE value = ? , lastModified = current_timestamp() ";
+          // Check if the entry exists
+          const existingEntry = await DB.siteParameters.findUnique({
+            where: {
+              name: dbName,
+            },
+          });
 
-          //insert data into DB
-          let sqlResult = await mysql.query(sql, [result, result]);
+          if (existingEntry) {
+            // Update the existing entry
+            await DB.siteParameters.update({
+              where: {
+                name: dbName,
+              },
+              data: {
+                value: result.toString(),
+                lastUpdated: new Date(),
+              },
+            });
+          } else {
+            // Create a new entry
+            await DB.siteParameters.create({
+              data: {
+                name: dbName,
+                value: result.toString(),
+                lastUpdated: new Date(),
+                description: "",
+                location: "",
+              },
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -42,13 +63,37 @@ async function plcToDB(ip: string, rack: number, slot: number, area: number, db:
 
         .then(async (result) => {
           //sql query to insert data into DB
-          let sql =
-            "INSERT INTO parameters (parameter, value, hidden) VALUES ('" +
-            dbName +
-            "', ? , 0) ON DUPLICATE KEY UPDATE value = ? , lastModified = current_timestamp() ";
 
-          //insert data into DB
-          let sqlResult = await mysql.query(sql, [result, result]);
+          // Check if the entry exists
+          const existingEntry = await DB.siteParameters.findUnique({
+            where: {
+              name: dbName,
+            },
+          });
+
+          if (existingEntry) {
+            // Update the existing entry
+            await DB.siteParameters.update({
+              where: {
+                name: dbName,
+              },
+              data: {
+                value: result.toString(),
+                lastUpdated: new Date(),
+              },
+            });
+          } else {
+            // Create a new entry
+            await DB.siteParameters.create({
+              data: {
+                name: dbName,
+                value: result.toString(),
+                lastUpdated: new Date(),
+                description: "",
+                location: "",
+              },
+            });
+          }
         })
         .catch((err) => {
           console.log(err);

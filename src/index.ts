@@ -1,8 +1,8 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from plc's and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2024/09/12 16:50:22
-const version = "2.0.1";
+//Last modified: 2024/09/16 22:38:01
+const version = "1.0.0";
 
 //import process tracker and start the process
 import ProcessTracker from "./processTracker.js";
@@ -45,8 +45,8 @@ cron.schedule("*/5 * * * * *", async () => {
   const tasks = [
     { name: "readDataFromPLC31TenSeconds", task: plc31.readDataFromPLC31TenSeconds() },
     { name: "checkAllEMS", task: emsZones.checkAllEMS() },
-    { name: "getAndInsertFaultsForCartonClosing", task: cartonClosing.getAndInsertFaultsForCartonClosing() },
-    { name: "getAndInsertFaultsForErectors", task: cartonErectors.getAndInsertFaultsForErectors() },
+    //{ name: "getAndInsertFaultsForCartonClosing", task: cartonClosing.getAndInsertFaultsForCartonClosing() },
+    //{ name: "getAndInsertFaultsForErectors", task: cartonErectors.getAndInsertFaultsForErectors() },
     { name: "readShuttlesFaults", task: plcShuttles.readShuttlesFaults() },
   ];
 
