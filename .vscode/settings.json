@@ -1,0 +1,7 @@
+{
+  "cSpell.words": ["prismix", "screwfix"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true
+}
