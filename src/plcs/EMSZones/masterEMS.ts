@@ -1,11 +1,11 @@
 //Service for Dematic Dashboard Screwfix trentham to read ems Data
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/26 10:13:56
+//Last modified: 2024/10/26 10:22:22
 //Version: 0.0.1
-//import plc33
 
-import plc from "src/misc/plc/plc.js";
+import PLC1 from "./PLCS/PLC1.js";
+import PLC2 from "./PLCS/PLC2.js";
 import PLC11 from "./PLCS/PLC11.js";
 import PLC12 from "./PLCS/PLC12.js";
 import PLC13 from "./PLCS/PLC13.js";
@@ -20,6 +20,8 @@ import PLC33 from "./PLCS/PLC33.js";
 async function checkAllEMS() {
 	console.log("Checking all EMS data");
 
+	await PLC1.readEMSDataFromPLC1();
+	await PLC2.readEMSDataFromPLC2();
 	await PLC11.readEMSDataFromPLC11();
 	await PLC12.readEMSDataFromPLC12();
 	await PLC13.readEMSDataFromPLC13();
