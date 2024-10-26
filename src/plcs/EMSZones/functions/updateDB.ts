@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from a PLC and push to DB
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/02 00:03:35
+//Last modified: 2024/10/26 08:25:38
 //Version: 0.0.1
 import plc from "../../../misc/plc/plc.js";
 import plcToDB from "../../../misc/plcToDB.js";
@@ -119,7 +119,9 @@ async function readAndInsertPlcData(
 			let bitValue = byte & (1 << plcArea.bit);
 			bitValue = bitValue >> plcArea.bit;
 
-			console.log("Data read from plc: " + bitValue);
+			console.log(
+				"Data read from plc: " + bitValue + " for area: " + plcArea.name
+			);
 
 			//insert data to DB if it does not exist else update
 			await insertOrUpdateDataToDB(plcArea, bitValue.toString());
@@ -134,7 +136,11 @@ async function insertOrUpdateDataToDB(plcArea: TPlcArea, data: string) {
 		},
 	});
 
+	console.log("Data exists: " + exists + " for area: " + plcArea.name);
+
 	if (exists) {
+		console.log("Updating data for area: " + plcArea.name);
+
 		await db.siteEMS.update({
 			where: {
 				name: plcArea.name,
@@ -144,6 +150,8 @@ async function insertOrUpdateDataToDB(plcArea: TPlcArea, data: string) {
 			},
 		});
 	} else {
+		console.log("Inserting data for area: " + plcArea.name);
+
 		await db.siteEMS.create({
 			data: {
 				name: plcArea.name,
