@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read ems Data from PLC 11
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/26 09:52:14
+//Last modified: 2024/10/26 09:53:18
 //Version: 0.0.1
 import snap7Types from "../../../misc/plc/types.js";
 import {
@@ -19,7 +19,7 @@ const plcConfig = {
 export async function readEMSDataFromPLC11() {
 	const items = [
 		{
-			name: "PLC11_EEStopZone_Zone5",
+			name: "PLC11_EEStopZone_Zone4",
 			location: "PLC11",
 			subLocation: "PLC11",
 			description: "EStop Monitoring Zone 4",
