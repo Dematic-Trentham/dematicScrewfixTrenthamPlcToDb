@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from a PLC and push to DB
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/26 08:37:35
+//Last modified: 2024/10/26 10:24:36
 //Version: 0.0.1
 import plc from "../../../misc/plc/plc.js";
 import plcToDB from "../../../misc/plcToDB.js";
@@ -63,6 +63,10 @@ export async function readAndInsertMultiple(
 	const s7client = new snap7.S7Client();
 
 	//console.log("Previous connection status: " + s7client.Connected());
+
+	s7client.SetParam(snap7Types.ParamNumber.SendTimeout, 5000);
+	s7client.SetParam(snap7Types.ParamNumber.RecvTimeout, 5000);
+	s7client.SetParam(snap7Types.ParamNumber.PingTimeout, 5000);
 
 	await s7client.ConnectTo(
 		plcConfig.ip,
