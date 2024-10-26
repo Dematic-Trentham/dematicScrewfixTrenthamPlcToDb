@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read ems Data from PLC 33
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/02 06:27:31
+//Last modified: 2024/10/26 09:12:12
 //Version: 0.0.1
 import snap7Types from "../../../misc/plc/types.js";
 import {
@@ -78,6 +78,56 @@ export async function readEMSDataFromPLC33() {
 			db: 0,
 			start: 3040,
 			bit: 2,
+		},
+		{
+			name: "PLC33_EStopZone_Zone4",
+			location: "PLC33",
+			subLocation: "PLC33",
+			description: "Emergency Stop Relay Healthy Zone 4 - Floor 1",
+			area: snap7Types.Area.S7AreaMK,
+			db: 0,
+			start: 70,
+			bit: 3,
+		},
+		{
+			name: "PLC33_EStopZone_Zone4_1",
+			location: "PLC33",
+			subLocation: "PLC33",
+			description: "Emergency Stop Relay Healthy Zone 4-1 Mezz above PLC33",
+			area: snap7Types.Area.S7AreaMK,
+			db: 0,
+			start: 70,
+			bit: 7,
+		},
+		{
+			name: "PLC33_EStopZone_Zone5",
+			location: "PLC33",
+			subLocation: "PLC33",
+			description: "Emergency Stop Relay Healthy Zone 5",
+			area: snap7Types.Area.S7AreaMK,
+			db: 0,
+			start: 70,
+			bit: 4,
+		},
+		{
+			name: "PLC33_EStopZone_Zone6",
+			location: "PLC33",
+			subLocation: "PLC33",
+			description: "Emergency Stop Relay Healthy Zone 6 - Ground Floor",
+			area: snap7Types.Area.S7AreaMK,
+			db: 0,
+			start: 70,
+			bit: 5,
+		},
+		{
+			name: "PLC33_EStopZone_Zone7",
+			location: "PLC33",
+			subLocation: "PLC33",
+			description: "Emergency Stop Relay Healthy Zone 7- Mezzanine",
+			area: snap7Types.Area.S7AreaMK,
+			db: 0,
+			start: 70,
+			bit: 6,
 		},
 	];
 
