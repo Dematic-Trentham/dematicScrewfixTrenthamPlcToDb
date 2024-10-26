@@ -1,12 +1,12 @@
 //Service for Dematic Dashboard Screwfix trentham to collect data from plc's and push to DB
 //Created by: JWL
 //Date: 2023/02/02 02:51:41
-//Last modified: 2024/09/16 22:38:01
+//Last modified: 2024/10/02 06:06:34
 const version = "1.0.0";
 
 //import process tracker and start the process
-import ProcessTracker from "./processTracker.js";
-ProcessTracker.startProcess("screwfix-trentham-plc-to-db");
+//import ProcessTracker from "./processTracker.js";
+//ProcessTracker.startProcess("screwfix-trentham-plc-to-db");
 
 //imports
 import cron from "node-cron";
@@ -37,49 +37,53 @@ console.log("Starting PLC To DB Service v" + version + " ....");
 
 //run every 5 seconds
 cron.schedule("*/5 * * * * *", async () => {
-  console.log();
-  console.log("Running 5s cron job");
+	console.log();
+	console.log("Running 5s cron job");
 
-  //start timer for this function
-  const start = Date.now();
-  const tasks = [
-    { name: "readDataFromPLC31TenSeconds", task: plc31.readDataFromPLC31TenSeconds() },
-    { name: "checkAllEMS", task: emsZones.checkAllEMS() },
-    //{ name: "getAndInsertFaultsForCartonClosing", task: cartonClosing.getAndInsertFaultsForCartonClosing() },
-    //{ name: "getAndInsertFaultsForErectors", task: cartonErectors.getAndInsertFaultsForErectors() },
-    { name: "readShuttlesFaults", task: plcShuttles.readShuttlesFaults() },
-  ];
+	//start timer for this function
+	const start = Date.now();
+	const tasks = [
+		{
+			name: "readDataFromPLC31TenSeconds",
+			task: plc31.readDataFromPLC31TenSeconds(),
+		},
 
-  await Promise.all(
-    tasks.map(({ name, task }) =>
-      task.catch((error) => {
-        console.error(`Error in function ${name}:`, error);
-      })
-    )
-  );
+		//{ name: "getAndInsertFaultsForCartonClosing", task: cartonClosing.getAndInsertFaultsForCartonClosing() },
+		//{ name: "getAndInsertFaultsForErectors", task: cartonErectors.getAndInsertFaultsForErectors() },
+		{ name: "readShuttlesFaults", task: plcShuttles.readShuttlesFaults() },
+	];
 
-  //how long did this function take to run?
-  const end = Date.now();
+	// await Promise.all(
+	//   tasks.map(({ name, task }) =>
+	//     task.catch((error) => {
+	//       console.error(`Error in function ${name}:`, error);
+	//     })
+	//   )
+	// );
 
-  //log the time taken
-  console.log("Time taken for 5 second : " + (end - start) + "ms");
+	//how long did this function take to run?
+	const end = Date.now();
 
-  //make a nice percentage  - (end - start) / 10000) * 100 + "%"
-  let percent = ((end - start) / 5000) * 100;
-  percent = Math.round(percent * 100) / 100;
+	//log the time taken
+	console.log("Time taken for 5 second : " + (end - start) + "ms");
 
-  //how much percent of the 3 seconds did this function take?
+	//make a nice percentage  - (end - start) / 10000) * 100 + "%"
+	let percent = ((end - start) / 5000) * 100;
+	percent = Math.round(percent * 100) / 100;
 
-  console.log("Percent of 5 seconds : " + percent + "%");
+	//how much percent of the 3 seconds did this function take?
+
+	console.log("Percent of 5 seconds : " + percent + "%");
 });
 
-//run every 1minute
-cron.schedule("* * * * *", async () => {
-  //console.log("Running 1m cron job");
+//run every 30 seconds
+cron.schedule("*/30 * * * * *", async () => {
+	await emsZones.checkAllEMS();
+	//console.log("Running 30s cron job");
 });
 
 //run every 5 minutes
 cron.schedule("*/5 * * * *", async () => {
-  //console.log("Running 5m cron job");
-  plcShuttles.readShuttlesLocations();
+	//console.log("Running 5m cron job");
+	plcShuttles.readShuttlesLocations();
 });
