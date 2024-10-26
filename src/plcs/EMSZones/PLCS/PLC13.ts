@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read ems Data from PLC 13
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/26 09:46:14
+//Last modified: 2024/10/26 10:00:35
 //Version: 0.0.1
 import snap7Types from "../../../misc/plc/types.js";
 import {
@@ -19,10 +19,10 @@ const plcConfig = {
 export async function readEMSDataFromPLC13() {
 	const items = [
 		{
-			name: "PLC13_EStopZone_Z5_ESTOP_OK_SEND_PL33_Z5",
-			location: "PLC33",
-			subLocation: "PLC33",
-			description: "EStop Monitoring Zone 5 ESTOP_OK_SEND_PL33_Z5 ( Virtual )",
+			name: "PLC13_EStopZone_Z5_ESTOP_OK_SEND_PL13_Z5",
+			location: "PLC13",
+			subLocation: "PLC13",
+			description: "EStop Monitoring Zone 5 ESTOP_OK_SEND_PL13_Z5 ( Virtual )",
 			area: snap7Types.Area.S7AreaDB,
 			db: 300,
 			start: 2,
@@ -30,8 +30,8 @@ export async function readEMSDataFromPLC13() {
 		},
 		{
 			name: "PLC13_EStopZone_Z5_ES_EMZ05",
-			location: "PLC33",
-			subLocation: "PLC33",
+			location: "PLC13",
+			subLocation: "PLC13",
 			description: "EStop Monitoring Zone 5 ES_EMZ05 ( ASi Input )",
 			area: snap7Types.Area.S7AreaPE,
 			db: 0,
@@ -40,8 +40,8 @@ export async function readEMSDataFromPLC13() {
 		},
 		{
 			name: "PLC13_EEStopZone_Zone5",
-			location: "PLC33",
-			subLocation: "PLC33",
+			location: "PLC13",
+			subLocation: "PLC13",
 			description: "EStop Monitoring Zone 5 ES_EMZ05 ( ASi Input )",
 			area: snap7Types.Area.S7AreaPE,
 			db: 0,
@@ -50,8 +50,8 @@ export async function readEMSDataFromPLC13() {
 		},
 		{
 			name: "PLC13_EEStopZone_Zone13.1",
-			location: "PLC33",
-			subLocation: "PLC33",
+			location: "PLC13",
+			subLocation: "PLC13",
 			description: "EStop Monitoring Zone 13.1 - First Floor)",
 			area: snap7Types.Area.S7AreaMK,
 			db: 0,
@@ -60,8 +60,8 @@ export async function readEMSDataFromPLC13() {
 		},
 		{
 			name: "PLC13_EEStopZone_Zone13.2",
-			location: "PLC33",
-			subLocation: "PLC33",
+			location: "PLC13",
+			subLocation: "PLC13",
 			description: "EStop Monitoring Zone 13.2 - Second Floor)",
 			area: snap7Types.Area.S7AreaMK,
 			db: 0,
@@ -70,8 +70,8 @@ export async function readEMSDataFromPLC13() {
 		},
 		{
 			name: "PLC13_EEStopZone_Zone13.3",
-			location: "PLC33",
-			subLocation: "PLC33",
+			location: "PLC13",
+			subLocation: "PLC13",
 			description: "EStop Monitoring Zone 13.3 - Third Floor)",
 			area: snap7Types.Area.S7AreaMK,
 			db: 0,
@@ -80,8 +80,8 @@ export async function readEMSDataFromPLC13() {
 		},
 		{
 			name: "PLC13_EEStopZone_Zone13.4",
-			location: "PLC33",
-			subLocation: "PLC33",
+			location: "PLC13",
+			subLocation: "PLC13",
 			description: "EStop Monitoring Zone 13.4 - Fourth Floor)",
 			area: snap7Types.Area.S7AreaMK,
 			db: 0,
@@ -90,8 +90,8 @@ export async function readEMSDataFromPLC13() {
 		},
 		{
 			name: "PLC13_EEStopZone_Zone4",
-			location: "PLC33",
-			subLocation: "PLC33",
+			location: "PLC13",
+			subLocation: "PLC13",
 			description: "EStop Monitoring Zone 4)",
 			area: snap7Types.Area.S7AreaMK,
 			db: 0,
@@ -100,8 +100,8 @@ export async function readEMSDataFromPLC13() {
 		},
 		{
 			name: "PLC13_EEStopZone_Zone5",
-			location: "PLC33",
-			subLocation: "PLC33",
+			location: "PLC13",
+			subLocation: "PLC13",
 			description: "EStop Monitoring Zone 5",
 			area: snap7Types.Area.S7AreaMK,
 			db: 0,
