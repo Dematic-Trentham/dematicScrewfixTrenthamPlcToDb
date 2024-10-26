@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from a PLC and push to DB
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/26 10:24:36
+//Last modified: 2024/10/26 10:32:12
 //Version: 0.0.1
 import plc from "../../../misc/plc/plc.js";
 import plcToDB from "../../../misc/plcToDB.js";
@@ -68,27 +68,37 @@ export async function readAndInsertMultiple(
 	s7client.SetParam(snap7Types.ParamNumber.RecvTimeout, 5000);
 	s7client.SetParam(snap7Types.ParamNumber.PingTimeout, 5000);
 
-	await s7client.ConnectTo(
-		plcConfig.ip,
-		plcConfig.rack,
-		plcConfig.slot,
-		async function (err: any) {
-			if (err) {
-				console.log(
-					"error for plc" + plcConfig.name + ": " + s7client.ErrorText(err)
-				);
-				return;
+	return new Promise<void>((resolve, reject) => {
+		s7client.ConnectTo(
+			plcConfig.ip,
+			plcConfig.rack,
+			plcConfig.slot,
+			async function (err: any) {
+				if (err) {
+					console.log(
+						"error for plc" + plcConfig.name + ": " + s7client.ErrorText(err)
+					);
+					reject(err);
+					return;
+				}
+
+				//console.log("Connected to plc: " + s7client.Connected());
+
+				try {
+					await Promise.all(
+						plcAreas.map(async (plcArea) => {
+							await readAndInsertPlcData(s7client, plcConfig, plcArea);
+						})
+					);
+					resolve();
+				} catch (error) {
+					reject(error);
+				} finally {
+					await s7client.Disconnect();
+				}
 			}
-
-			//console.log("Connected to plc: " + s7client.Connected());
-
-			await Promise.all(
-				plcAreas.map(async (plcArea) => {
-					await readAndInsertPlcData(s7client, plcConfig, plcArea);
-				})
-			);
-		}
-	);
+		);
+	});
 }
 
 async function readAndInsertPlcData(
