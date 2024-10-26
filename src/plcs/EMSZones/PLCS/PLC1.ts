@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read ems Data from PLC 1
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/26 10:19:34
+//Last modified: 2024/10/26 10:29:35
 //Version: 0.0.1
 import snap7Types from "../../../misc/plc/types.js";
 import {
@@ -30,7 +30,11 @@ export async function readEMSDataFromPLC1() {
 		},
 	];
 
+	console.log("Reading PLC1 EMS data");
+
 	await readAndInsertMultiple(plcConfig, items);
+
+	console.log("PLC1 EMS data read");
 }
 
 export default { readEMSDataFromPLC1 };
