@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from a PLC and push to DB
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/26 08:32:29
+//Last modified: 2024/10/26 08:37:35
 //Version: 0.0.1
 import plc from "../../../misc/plc/plc.js";
 import plcToDB from "../../../misc/plcToDB.js";
@@ -62,7 +62,7 @@ export async function readAndInsertMultiple(
 	//connect to plc
 	const s7client = new snap7.S7Client();
 
-	console.log("Previous connection status: " + s7client.Connected());
+	//console.log("Previous connection status: " + s7client.Connected());
 
 	await s7client.ConnectTo(
 		plcConfig.ip,
@@ -76,7 +76,7 @@ export async function readAndInsertMultiple(
 				return;
 			}
 
-			console.log("Connected to plc: " + s7client.Connected());
+			//console.log("Connected to plc: " + s7client.Connected());
 
 			await Promise.all(
 				plcAreas.map(async (plcArea) => {
@@ -109,7 +109,7 @@ async function readAndInsertPlcData(
 						plcArea.name
 				);
 
-				console.log(s7client.Connected());
+				//console.log(s7client.Connected());
 				return;
 			}
 
@@ -119,9 +119,9 @@ async function readAndInsertPlcData(
 			let bitValue = byte & (1 << plcArea.bit);
 			bitValue = bitValue >> plcArea.bit;
 
-			console.log(
-				"Data read from plc: " + bitValue + " for area: " + plcArea.name
-			);
+			//console.log(
+			//	"Data read from plc: " + bitValue + " for area: " + plcArea.name
+			//);
 
 			//insert data to DB if it does not exist else update
 			await insertOrUpdateDataToDB(plcArea, bitValue.toString());
@@ -136,10 +136,10 @@ async function insertOrUpdateDataToDB(plcArea: TPlcArea, data: string) {
 		},
 	});
 
-	console.log("Data exists: " + exists + " for area: " + plcArea.name);
+	//console.log("Data exists: " + exists + " for area: " + plcArea.name);
 
 	if (exists) {
-		console.log("Updating data for area: " + plcArea.name);
+		//console.log("Updating data for area: " + plcArea.name);
 
 		await db.siteEMS.update({
 			where: {
@@ -151,7 +151,7 @@ async function insertOrUpdateDataToDB(plcArea: TPlcArea, data: string) {
 			},
 		});
 	} else {
-		console.log("Inserting data for area: " + plcArea.name);
+		//console.log("Inserting data for area: " + plcArea.name);
 
 		await db.siteEMS.create({
 			data: {
