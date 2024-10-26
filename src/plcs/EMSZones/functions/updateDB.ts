@@ -1,7 +1,7 @@
 //Service for Dematic Dashboard Screwfix trentham to read date from a PLC and push to DB
 //Created by: JWL
 //Date: 2023/02/03 03:38:36
-//Last modified: 2024/10/26 08:25:38
+//Last modified: 2024/10/26 08:32:29
 //Version: 0.0.1
 import plc from "../../../misc/plc/plc.js";
 import plcToDB from "../../../misc/plcToDB.js";
@@ -147,6 +147,7 @@ async function insertOrUpdateDataToDB(plcArea: TPlcArea, data: string) {
 			},
 			data: {
 				value: data,
+				lastUpdated: new Date(),
 			},
 		});
 	} else {
